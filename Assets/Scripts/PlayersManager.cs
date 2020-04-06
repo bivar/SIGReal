@@ -32,7 +32,7 @@ public class PlayersManager : MonoBehaviour
         {
             if (playersCount < 10)
             {
-                playerList.Add(new PlayersInfo(nameInput.text));
+                playerList.Add(new PlayersInfo(nameInput.text, true));
                 GameObject player = Instantiate(playerPrefab, playerListTransform);
                 player.GetComponentInChildren<Text>().text = nameInput.text;
                 if(PlayersCount != 0)
@@ -66,6 +66,22 @@ public class PlayersManager : MonoBehaviour
         return player;
     }
 
+    //Método para obter apenas players em uma única condição de saúde
+    public List<PlayersInfo> GetSpecificPlayers(bool healthStatus)
+    {
+        List<PlayersInfo> specificPlayers = new List<PlayersInfo>();
+
+        foreach (PlayersInfo player in playerList)
+        {
+            if (player.healthStatus == healthStatus)
+            {
+                specificPlayers.Add(player);
+            }
+        }
+
+        return specificPlayers;
+    }
+
     public void NextScene()
     {
         if(playersCount > 1)
@@ -86,6 +102,9 @@ public class PlayersInfo
     public float x;
     public float y;
     public GameObject player;
+    //Saúde do jogador: true indica saudável; false indica infectado com covid
+    public bool healthStatus = true;
+    
 
     //Cor do jogador, ainda nao é importante
     //private Color color;
@@ -95,6 +114,11 @@ public class PlayersInfo
         this.name = name;
     }
 
+    public PlayersInfo(string name, bool healthStatus)
+    {
+        this.healthStatus = healthStatus;
+        this.name = name;
+    }
     /*public PlayersInfo(string name, Color color)
     {
         this.name = name;
